@@ -107,11 +107,13 @@ function List({ item, handleDelete }) {
 
   const handleEdit = function () {
     setEdit(!edit);
+    setCheck(false);
   };
 
   const handleCheck = function () {
     setCheck((prevCheck) => !prevCheck);
     item.isCompleted = !item.isCompleted;
+    setEdit(false);
   };
 
   return (

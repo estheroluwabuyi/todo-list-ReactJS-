@@ -54,7 +54,7 @@ body {
 }
 
 .todo-header {
-  /* font-size: clamp(3rem, 10vw, 7rem); */
+  font-size: clamp(3rem, 10vw, 7rem);
   font-size: 7rem;
   font-family: var(--raleway);
   font-weight: 900;
@@ -81,10 +81,10 @@ body {
 
 .input {
   width: 100%;
-  height: 6.5rem;
+  height: 5.5rem;
   border-radius: 50px;
   padding: 1.2rem 2rem;
-  font-size: 2rem;
+  font-size: 1.8rem;
   border: none;
   background: var(--form-bg);
   display: block;
@@ -93,14 +93,14 @@ body {
 
 .options {
   position: relative;
-  height: 5.5rem;
+  height: 4.5rem;
   background: var(--form-bg);
   border-radius: 20px;
   appearance: none;
   padding: 1.2rem;
   width: 100%;
   color: var(--form-color);
-  font-size: 1.7rem;
+  font-size: 1.5rem;
   display: block;
   letter-spacing: 1px;
   z-index: 1;
