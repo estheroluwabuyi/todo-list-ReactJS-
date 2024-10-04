@@ -1,16 +1,12 @@
 import { useState } from "react";
 
-// const initialItems = [
-//   { id: 1, description: "Passports", quantity: 2, packed: false },
-//   { id: 2, description: "Socks", quantity: 12, packed: false },
-// ];
-
 export default function App() {
   const [input, setInput] = useState("");
   const [tasks, setTasks] = useState([]);
+  const [option, setOption] = useState("All");
 
   function handleAddInputs() {
-    const newItem = { input, id: Date.now() };
+    const newItem = { input, id: Date.now(), isCompleted: false };
 
     if (!input) return;
     setTasks([...tasks, newItem]);
@@ -23,9 +19,9 @@ export default function App() {
   }
 
   function handleDelete(id) {
-    setTasks((items) => items.filter((item) => item.id !== id));
-    // console.log(id);
-    window.confirm("Do you really want to delete this task?");
+    if (window.confirm("Do you really want to delete this task?")) {
+      setTasks((items) => items.filter((item) => item.id !== id));
+    }
   }
 
   return (
@@ -35,10 +31,14 @@ export default function App() {
         onHandleSubmit={handleSubmit}
         input={input}
         setInput={setInput}
-        setTasks={setTasks}
-        tasks={tasks}
+        option={option}
+        setOption={setOption}
       />
-      <TodoContainer tasks={tasks} onHandleDelete={handleDelete} />
+      <TodoContainer
+        tasks={tasks}
+        onHandleDelete={handleDelete}
+        option={option}
+      />
     </div>
   );
 }
@@ -47,9 +47,7 @@ function Header() {
   return <h1 className="todo-header">Todo List</h1>;
 }
 
-function Form({ input, setInput, onHandleSubmit }) {
-  const [option, setOption] = useState("All");
-
+function Form({ input, setInput, onHandleSubmit, option, setOption }) {
   return (
     <form className="form" onSubmit={onHandleSubmit}>
       <div className="btn-input-container">
@@ -62,7 +60,7 @@ function Form({ input, setInput, onHandleSubmit }) {
             placeholder="Add a Task..."
           />
 
-          <button type="submit" className="input-btn" onSubmit={onHandleSubmit}>
+          <button type="submit" className="input-btn">
             <ion-icon name="add-circle-outline"></ion-icon>
           </button>
         </section>
@@ -72,7 +70,7 @@ function Form({ input, setInput, onHandleSubmit }) {
             id="choices"
             className="options"
             value={option}
-            onChange={(e) => setOption(e.target.value)}
+            onChange={(e) => setOption(e.target.value)} // Update option when changed
           >
             <option value="All">All</option>
             <option value="Completed">Completed</option>
@@ -87,10 +85,16 @@ function Form({ input, setInput, onHandleSubmit }) {
   );
 }
 
-function TodoContainer({ tasks, onHandleDelete }) {
+function TodoContainer({ tasks, onHandleDelete, option }) {
+  const filteredTasks = tasks.filter((task) => {
+    if (option === "Completed") return task.isCompleted;
+    if (option === "Uncompleted") return !task.isCompleted;
+    return true;
+  });
+
   return (
     <div>
-      {tasks.map((i) => (
+      {filteredTasks.map((i) => (
         <List item={i} key={i.id} handleDelete={onHandleDelete} />
       ))}
     </div>
@@ -99,16 +103,15 @@ function TodoContainer({ tasks, onHandleDelete }) {
 
 function List({ item, handleDelete }) {
   const [edit, setEdit] = useState(false);
-  const [check, setCheck] = useState(false);
+  const [check, setCheck] = useState(item.isCompleted);
 
   const handleEdit = function () {
     setEdit(!edit);
-    setCheck(false);
   };
 
   const handleCheck = function () {
-    setCheck(!check);
-    setEdit(false);
+    setCheck((prevCheck) => !prevCheck);
+    item.isCompleted = !item.isCompleted;
   };
 
   return (
