@@ -1,4 +1,4 @@
-import  List  from "./List";
+import List from "./List";
 
 export default function TodoContainer({ tasks, onHandleDelete, option }) {
   const filteredTasks = tasks.filter((task) => {

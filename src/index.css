@@ -248,6 +248,7 @@ body {
   border-bottom-left-radius: 10px;
 }
 
+/**********************************************/
 /* Media Queries */
 @media (max-width: 500px) {
   .todo-header {
